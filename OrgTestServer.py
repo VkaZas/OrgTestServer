@@ -1,12 +1,11 @@
-from flask import Flask
-from flask import request
 import json
 
-from model_util import load_model
-from predictor import predict, validate_attrs
+from flask import Flask
+from flask import request
+
+from dbLayer.query import predict
 
 app = Flask(__name__)
-load_model()
 
 
 @app.route('/')
@@ -16,27 +15,22 @@ def hello_world():
 
 @app.route('/testapi', methods=['GET'])
 def test_api():
-    params = {
-        'time': request.args.get('time'),
-        'sex': request.args.get('sex'),
-        'province': request.args.get('province'),
-    }
+    try:
+        timeslot = request.args.get('timeslot')
+        gender = request.args.get('gender')
+        province = request.args.get('province')
 
-    if not validate_attrs(params):
-        return json.dumps({
-            'prize': [],
-            'prob': [],
-            'status': 'Failed',
-        })
+        # must be json
+        product_and_probability = predict(gender, timeslot, province)
+        return product_and_probability
 
-    result_prize, result_prob = predict(params)
-    return json.dumps({
-        'prize': result_prize,
-        'prob': result_prob,
-        'status': 'Succeeded',
-    })
+    # any possible error go on
+    except Exception as e:
+        error = {
+            "message": str(e)
+        }
+        return json.dump(error)
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
-
