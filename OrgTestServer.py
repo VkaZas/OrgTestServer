@@ -3,6 +3,7 @@ import json
 from flask import Flask
 from flask import request
 
+
 from dbLayer.query import predict
 from dbLayer.load_json_to_redis import load_json_to_redis
 
