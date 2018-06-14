@@ -4,6 +4,7 @@ province_name_list = ['香港', '澳门', '江西', '广东', '山东', '浙江'
 
 
 def gender_encoding(gender):
+    output = '01'
     if gender == '1':
         output = '01'
     elif gender == '2':
@@ -12,6 +13,7 @@ def gender_encoding(gender):
 
 
 def timeslot_encoding(timeslot):
+    output = '01'
     if int(timeslot) <= 10 and int(timeslot) >= 6:
         output = '01'
     elif int(timeslot) > 10 and int(timeslot) <= 14:

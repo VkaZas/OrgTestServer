@@ -1,21 +1,26 @@
 import redis
 import json
 
-r = redis.Redis(
-    host='localhost',
-    port=6379,
-    password='')
 
-# Empty db
-r.flushall()
+def load_json_to_redis():
+    r = redis.Redis(
+        host='localhost',
+        port=6379,
+        password='')
 
-# load data into redis
-with open('data.json') as f:
-    data = json.load(f)
+    # Empty db
+    r.flushall()
 
-for entry in data:
-    key = entry["key"]
-    value = json.dumps(entry["value"])
-    r.set(key, value)
+    # load data into redis
+    with open('dbLayer/data.json') as f:
+        data = json.load(f)
+
+    for entry in data:
+        key = entry["key"]
+        value = json.dumps(entry["value"])
+        r.set(key, value)
+
+
+
 
 

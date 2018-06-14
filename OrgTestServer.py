@@ -4,8 +4,10 @@ from flask import Flask
 from flask import request
 
 from dbLayer.query import predict
+from dbLayer.load_json_to_redis import load_json_to_redis
 
 app = Flask(__name__)
+load_json_to_redis()
 
 
 @app.route('/')
@@ -29,7 +31,7 @@ def test_api():
         error = {
             "message": str(e)
         }
-        return json.dump(error)
+        return json.dumps(error)
 
 
 if __name__ == '__main__':
