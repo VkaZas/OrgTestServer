@@ -1,6 +1,6 @@
 import redis
 
-from dbLayer.index_encoding import *
+from redisLayer.index_encoding import *
 
 r = redis.Redis(
     host='localhost',

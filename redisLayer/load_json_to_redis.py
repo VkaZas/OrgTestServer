@@ -12,7 +12,7 @@ def load_json_to_redis():
     r.flushall()
 
     # load data into redis
-    with open('dbLayer/data.json') as f:
+    with open('redisLayer/data.json') as f:
         data = json.load(f)
 
     for entry in data:
