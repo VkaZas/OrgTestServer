@@ -8,6 +8,6 @@ r = redis.Redis(
     password='')
 
 
-def predict(gender, timeslot, province):
-    encoding = index_encoding(gender, timeslot, province)
+def predict(projectid, city, gender):
+    encoding = index_encoding(projectid, city, gender)
     return r.get(encoding).decode('utf-8')
