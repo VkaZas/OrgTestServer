@@ -22,13 +22,18 @@ def hello_world():
 @app.route('/prizeLogUpdate', methods=['POST'])
 def prizeLogUpdate():
     try:
-        timestamp = request.args.get('timestamp')
-        gender = request.args.get('gender')
-        province = request.args.get('province')
-        prizeid = request.args.get('prizeid')
-        openid = request.args.get('openid')
+        timestamp = request.form.get('timestamp')
+        gender = request.form.get('gender')
+        province = request.form.get('province')
+        prizeid = request.form.get('prizeid')
+        openid = request.form.get('openid')
+        city = request.form.get('city')
+        qrcode = request.form.get('qrcode')
 
-        update_customer_prize_record(openid, gender, province, prizeid, timestamp)
+        update_customer_prize_record(openid, gender, province, city, prizeid, qrcode, timestamp)
+        return json.dumps({
+            'status': 'success',
+        })
 
     # any possible error go on
     except Exception as e:
@@ -41,11 +46,14 @@ def prizeLogUpdate():
 @app.route('/interfaceLogUpdate', methods=['POST'])
 def interfaceLogUpdate():
     try:
-        timestamp = request.args.get('timestamp')
-        prizeid = request.args.get('prizeid')
-        openid = request.args.get('openid')
+        timestamp = request.form.get('timestamp')
+        prizeid = request.form.get('prizeid')
+        openid = request.form.get('openid')
 
         update_customer_participation_record(openid, prizeid, timestamp)
+        return json.dumps({
+            'status': 'success',
+        })
 
     # any possible error go on
     except Exception as e:

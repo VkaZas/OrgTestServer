@@ -2,13 +2,18 @@ from mongoLayer.models import Customer, Record
 import datetime
 
 
-def update_customer_prize_record(openid, gender, province, prizeid, timestamp=datetime.datetime.utcnow):
-    customer = Customer.objects().get(openid=openid)
-    record = Record(prizeid=prizeid, timestamp=timestamp)
+def update_customer_prize_record(openid, gender, province, city, prizeid, qrcode, timestamp=datetime.datetime.utcnow):
+    num = Customer.objects().filter(openid=openid).count()
+    if num == 1:
+        customer = Customer.objects().get(openid=openid)
+    elif num == 0:
+        # Customer does not exist, create a new customer
+        customer = Customer(openid=openid, gender=gender, province=province, city=city)
+    else:
+        print('Error: Multiple records on openid = ' + str(openid))
+        return
 
-    # Customer does not exist, create a new customer
-    if not customer:
-        customer = Customer(openid=openid, gender=gender, province=province, prizeid=prizeid, timestamp=timestamp)
+    record = Record(prizeid=prizeid, timestamp=timestamp, qrcode=qrcode)
 
     customer.records.append(record)
     customer.save()
@@ -21,7 +26,7 @@ def update_customer_participation_record(openid, prizeid, timestamp=datetime.dat
 
         # Find the corresponding prize record and mark as participated
         for record in records:
-            if record.priceid == prizeid:
+            if record.prizeid == prizeid:
                 record.participation = True
                 break
 
